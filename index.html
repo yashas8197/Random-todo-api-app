@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="my-3">Random Todos</h1>
+
+    <button id="getTodoBtn" class="btn btn-primary">Get Random Todos</button>
+
+    <div id="todoContainer" class="mb-4">
+
+    </div>
+  </div>
+
+  <script>
+    const getTodoBtn = document.querySelector('#getTodoBtn')
+    const todoContainer = document.querySelector('#todoContainer')
+
+    const apiUrl = 'https://jsonplaceholder.typicode.com/todos?_limit=3'
+
+    getTodoBtn.addEventListener("click", function () {
+      todoContainer.textContent = "Loding..."
+      fetch(apiUrl)
+        .then(function (response) {
+          return response.json()
+        })
+        .then(function (data) {
+          if (data && data.length > 0) {
+            const todoData = []
+            for (let i = 0; i < data.length; i++) {
+              const todosData = `<div class="card my-3 p-3"><h5 class="card-title">${data[i].title}</h5>${data[i].completed ? `<p class=card-text>Completed</p>` : `<p class="card-text">Not Completed</p>`}</div>`
+
+              todoData.push(todosData)
+            }
+            const finalData = todoData.join("")
+            todoContainer.innerHTML = finalData
+          } else {
+            todoContainer.textContent = "Todo Not Found"
+          }
+        })
+        .catch(function showResult(error) {
+          todoContainer.textContent = "Something when Wrong"
+        })
+    })
+
+
+  </script>
+</body>
+
+</html>
